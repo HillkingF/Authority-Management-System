@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <!--<div id="nav">-->
+    <!--  &lt;!&ndash;<router-link to="/login">Login</router-link> |&ndash;&gt;-->
+    <!--  &lt;!&ndash;<router-link to="/about">About</router-link>&ndash;&gt;-->
+    <!--   App.vue外部页面-->
+    <!--</div>-->
     <router-view/>
   </div>
 </template>
@@ -16,6 +17,14 @@
   text-align: center;
   color: #2c3e50;
 }
+
+  /*html, body, #app {*/
+  /*  font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', 'Microsoft Yahei', sans-serif;*/
+  /*  height: 100%;*/
+  /*  padding: 0;*/
+  /*  margin: 0;*/
+  /*  font-size: 15px;   }*/
+
 
 #nav {
   padding: 30px;
