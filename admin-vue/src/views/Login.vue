@@ -78,12 +78,7 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        code: '',
       },
       // 表单校验规则
       rules: {
