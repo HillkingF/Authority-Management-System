@@ -13,21 +13,23 @@
           <!--rules 属性传入约定的验证规则-->
           <!--prop 属性设置为需校验的字段名-->
           <!--设置表单: ref 绑定控件-->
-          <!--:model是v-bind:model的缩写,用于绑定数据.v-model实现双向绑定数据-->
+          <!--:model是v-bind:model的缩写,用于绑定到return中的数据loginForm. v-model实现双向绑定数据:前端输入,vue字段接收;反之也成立-->
+          <!--ref="loginForm": 注册对象-->
           <el-form :model="loginForm" :rules="rules"
                    ref="loginForm" label-width="25%"
                    class="demo-loginForm" label-position="left"
                    size="mini">
             <el-form-item label="账  号" class="label-font"  prop="username" >
-              <el-input v-model="loginForm.name" placeholder="Username" class="inputtext"></el-input>
+              <el-input v-model="loginForm.username" placeholder="Username" class="inputtext"></el-input>
             </el-form-item>
             <el-form-item label="密  码"  class="label-font" prop="password">
-              <el-input  v-model="loginForm.name" placeholder="Password" class="inputtext"></el-input>
+              <el-input  v-model="loginForm.password" placeholder="Password" class="inputtext"></el-input>
             </el-form-item>
             <el-form-item label="验证码" class="label-font-code" prop="code" >
-              <el-input v-model="loginForm.name" placeholder="Check Code" class="inputcode inputtext"></el-input>
+              <el-input v-model="loginForm.code" placeholder="Check Code" class="inputcode inputtext"></el-input>
               <!--这个元素用于防止校验码图像,src是图像路径-->
-              <el-image src="" class="codeimg"></el-image>
+              <!--开发验证码功能,设置参数v-bing:src=captchaImg-->
+              <el-image :src="captchaImg" class="codeimg"></el-image>
             </el-form-item>
 
 
@@ -35,6 +37,7 @@
             <!--<el-form-item>-->
             <!--  -->
             <!--</el-form-item>-->
+            <!--点击处罚按钮事件-->
             <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
             <el-button @click="resetForm('loginForm')">重置</el-button>
 
@@ -59,10 +62,14 @@ export default {
         username: '',
         password: '',
         code: '',
+        // token用于获取验证码生成的随机码
+        token: ''
       },
       // 表单校验规则
       rules: {
         username: [
+          //  trigger:blur 当失去焦点的时候,触发规则验证
+          // required: true 表示这个是必填选项
           { required: true, message: '请输入用户名', trigger: 'blur' },
         ],
         password: [
@@ -72,22 +79,40 @@ export default {
           { required: true, message: '请输入验证码', trigger: 'blur' },
           { min: 5, max: 5, message: '长度为 5 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      // 在return 中新增captchaImg捕获验证码图像
+      captchaImg: null
     };
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          // alert('submit!');
+          // 设置登录成功后的效果:从this.loginForm获取前端的结果
+          // ajax技术实现了网页的局部数据刷新，axios实现了对ajax的封装。axios：提供了一些并发请求的接口（重要，方便了很多的操作）
+          this.$axios.post('/login', this.loginForm).then(res =>{
+
+          })
         } else {
           console.log('error submit!!');
           return false;
         }
       });
     },
+    // 重置信息
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    // 捕获验证码图片的方法
+    getCaptcha(){
+      // 点击验证码图片位置向后端发起异步请求,刷新创建新的验证码图片
+      this.$axios.post('/captcha', this.loginForm).then(res =>{
+        // 获取验证码对应的随机码
+        this.loginForm.token = res.data.data.token;  // res.data表示结果, 第二个data表示结果中的属性data
+        // 获取验证码图像
+        this.captchaImg = res.data.data.captchaImg
+      })
     }
   }
 }
@@ -166,6 +191,7 @@ export default {
 .codeimg{
   float: left;
   margin-left: 8px;
+  border-radius: 4px;
 }
 
 
