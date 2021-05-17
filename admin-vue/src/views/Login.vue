@@ -29,10 +29,8 @@
               <el-input v-model="loginForm.code" placeholder="Check Code" class="inputcode inputtext"></el-input>
               <!--这个元素用于防止校验码图像,src是图像路径-->
               <!--开发验证码功能,设置参数v-bing:src=captchaImg-->
-              <el-image :src="captchaImg" class="codeimg"></el-image>
+              <el-image :src="captchaImg" class="codeimg" ></el-image>
             </el-form-item>
-
-
 
             <!--<el-form-item>-->
             <!--  -->
@@ -87,12 +85,18 @@ export default {
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        if (valid) {
-          // alert('submit!');
+        if (valid) { // 如果校验成功可以登录
           // 设置登录成功后的效果:从this.loginForm获取前端的结果
           // ajax技术实现了网页的局部数据刷新，axios实现了对ajax的封装。axios：提供了一些并发请求的接口（重要，方便了很多的操作）
           this.$axios.post('/login', this.loginForm).then(res =>{
+            // 登录校验成功后,服务器会将JWT封装在header中并返回给客户端,
+            // 客户端应该将jwt信息保存.之后每一次访问都将jwt发给后端用来快速验证
+            const jwt = res.headers['authorization']  // 1.获取jwt
+            // 2.浏览器存储jwt
+            this.$store.commit("SET_TOKEN", jwt)
 
+            // 完成以上工作后就可以进行界面跳转了,使用router进行跳转
+            this.$router.push("/index")
           })
         } else {
           console.log('error submit!!');
@@ -102,18 +106,27 @@ export default {
     },
     // 重置信息
     resetForm(formName) {
+      console.log("重置")
       this.$refs[formName].resetFields();
     },
     // 捕获验证码图片的方法
     getCaptcha(){
+      console.log("daying");
       // 点击验证码图片位置向后端发起异步请求,刷新创建新的验证码图片
-      this.$axios.post('/captcha', this.loginForm).then(res =>{
+      this.$axios.get('/captcha').then(res =>{
         // 获取验证码对应的随机码
-        this.loginForm.token = res.data.data.token;  // res.data表示结果, 第二个data表示结果中的属性data
+        this.loginForm.token = res.data.data.token  // res.data表示结果, 第二个data表示结果中的属性data
         // 获取验证码图像
         this.captchaImg = res.data.data.captchaImg
+        console.log(this.loginForm.token)
+        console.log(this.captchaImg)
       })
     }
+
+  },
+  // 一般可以在created函数中调用ajax获取页面初始化所需的数据。
+  created() {
+    this.getCaptcha();   // 调用登录页验证码请求,来显示初始验证码
   }
 }
 </script>
@@ -190,6 +203,8 @@ export default {
 }
 .codeimg{
   float: left;
+  width: 60px;
+  height: 30px;
   margin-left: 8px;
   border-radius: 4px;
 }
