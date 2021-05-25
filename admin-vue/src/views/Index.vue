@@ -1,5 +1,6 @@
 <template>
-  <h1>默认显示页面index.vue</h1>
+  <div>main</div>
+
 </template>
 
 <script>
@@ -8,6 +9,5 @@ export default {
 }
 </script>
 
-<style scoped>
 
-</style>
+

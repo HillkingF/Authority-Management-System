@@ -29,7 +29,7 @@ request.interceptors.response.use(response=>{
     if (res.code === 200){ // 如果响应码是200,说明返回信息没有问题
         return response // 直接继续传递response
     }else{  // 如果响应码有问题,则拦截并报警
-        Element.Message.error(res.msg? '系统异常': res.msg)
+        Element.Message.error(!res.msg? '系统异常': res.msg)
         return Promise.reject(response.data.msg)  // 拒绝信息
     }
 }, error =>{  // 如果过程中出现了一些异常,可以进一步判断 状态码是不是401等
