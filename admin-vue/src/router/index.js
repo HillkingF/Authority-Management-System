@@ -4,6 +4,10 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Index from '../views/Index.vue'  // 1.默认显示页面
 import Login from '../views/Login.vue'  // 2.登录首页
+// 2. 导入home页面的sys目录下的子路由
+import Menu from "@/views/sys/Menu";
+import Role from "@/views/sys/Role";
+import User from "@/views/sys/User";
 
 Vue.use(VueRouter)
 
@@ -13,13 +17,27 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home,
-    // 将index作为home的子页面
-    children:[
+    children:[   // 创建home页面的子路由
       {
-        // 完整哇请求是 : http://localhost:8080/index
+        // 将index作为home的子页面, 完整请求是 : http://localhost:8080/index
         path: '/index',
         name: 'Index',
         component: Index
+      },
+      {
+        path: '/users',
+        name: 'SysUser',
+        component: User
+      },
+      {
+        path: '/roles',
+        name: 'SysRole',
+        component: Role
+      },
+      {
+        path: '/menus',
+        name: 'SysMenu',
+        component: Menu
       }
     ]
   },

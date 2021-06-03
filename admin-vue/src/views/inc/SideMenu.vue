@@ -9,13 +9,14 @@
     <!--@close="handleClose"-->
 
     <!--导航栏标题-->
-    <el-menu-item>
-      <template slot="title">
-        <i class="el-icon-s-home"></i>
-        <span><strong  class="toolbar-title">主页</strong></span>
-      </template>
-    </el-menu-item>
-
+    <router-link to="/index">
+      <el-menu-item>
+        <template slot="title">
+          <i class="el-icon-s-home"></i>
+          <span><strong class="toolbar-title">主页</strong></span>
+        </template>
+      </el-menu-item>
+    </router-link>
 
     <!--导航栏选项-->
     <el-submenu index="1">
@@ -24,24 +25,30 @@
         <span>系统管理</span>
       </template>
 
-      <el-menu-item index="1-1">
-        <template slot="title">
-          <i class="el-icon-user"></i>
-          <span>用户管理</span>
-        </template>
-      </el-menu-item>
-      <el-menu-item index="1-2">
-        <template slot="title">
-          <i class="el-icon-view"></i>
-          <span>角色管理</span>
-        </template>
-      </el-menu-item>
-      <el-menu-item index="1-3">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span>菜单管理</span>
-        </template>
-      </el-menu-item>
+      <router-link to="/users">
+        <el-menu-item index="1-1">
+          <template slot="title">
+            <i class="el-icon-user"></i>
+            <span>用户管理</span>
+          </template>
+        </el-menu-item>
+      </router-link>
+      <router-link to="/roles">
+        <el-menu-item index="1-2">
+          <template slot="title">
+            <i class="el-icon-view"></i>
+            <span>角色管理</span>
+          </template>
+        </el-menu-item>
+      </router-link>
+      <router-link to="/menus">
+        <el-menu-item index="1-3">
+          <template slot="title">
+            <i class="el-icon-menu"></i>
+            <span>菜单管理</span>
+          </template>
+        </el-menu-item>
+      </router-link>
     </el-submenu>
 
     <el-submenu index="2">
@@ -56,6 +63,8 @@
         </template>
       </el-menu-item>
     </el-submenu>
+
+
   </el-menu>
 </template>
 
@@ -66,7 +75,7 @@ export default {
 </script>
 
 <style scoped>
-.menu_total{
+.menu_total {
   height: 100%;
   width: 200px;
   position: fixed;
@@ -76,7 +85,8 @@ export default {
   line-height: 200px;
   float: left;
 }
-.toolbar-title{
+
+.toolbar-title {
   color: #FFA500;
 }
 
