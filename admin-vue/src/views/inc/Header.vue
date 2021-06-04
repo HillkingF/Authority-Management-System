@@ -3,12 +3,14 @@
     <strong>后台管理界面</strong>
     <div class="headimg">
       <!--头像框-->
-      <el-avatar class="userimg" size="medium">User</el-avatar>
+      <!--:src 传入用户头像-->
+      <el-avatar :src="userInfo.avatar" class="userimg" size="medium" >User</el-avatar>
 
       <!--下拉菜单-->
       <el-dropdown class="dropdown">
             <span class="el-dropdown-link">
-              用户空间<i class="el-icon-arrow-down el-icon--right"></i>
+              <!--传入用户名-->
+              {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
@@ -25,7 +27,26 @@
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+  data(){
+    return {   // 向这个页面(头部)返回用户信息
+      userInfo: {
+        id: "",
+        username: "",
+        avatar: ""
+      }
+    }
+  },
+  methods: { // 在methods中定义用户方法
+    getUserInfo(){
+      this.$axios.get("/sys/userInfo").then(res=>{
+        this.userInfo = res.data.data
+      })
+    }
+  },
+  created() { // 接收调用用户方法
+    this.getUserInfo()  // 页面加载的时候获取用户信息
+  }
 }
 </script>
 
@@ -51,9 +72,9 @@ export default {
   /*设置右侧外部间隔*/
   margin-right: 8px;
   /*设置背景图像*/
-  background-image: url("../../assets/touxiang.png");
+  /*background-image: url("../../assets/touxiang.png");*/
   /*设置背景图像的大小*/
-  background-size: cover;
+  /*background-size: cover;*/
 }
 /*下拉框*/
 .dropdown{

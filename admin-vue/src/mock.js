@@ -28,3 +28,14 @@ Mock.mock('/login', "post", () =>  {
     // 无法在header中传入jwt
     return Result
 })
+
+//模拟'/sys/userInfo' 请求  获取用户信息
+Mock.mock('/sys/userInfo', "get", () =>  {
+    Result.data = {
+        // 根据Header.vue中data() return的结果,返回对应的用户信息
+        id: "1",
+        username: "nini",
+        avatar: "https://img.zcool.cn/community/01129957723f4b0000018c1b6692bb.jpg@1280w_1l_2o_100sh.jpg"
+    }
+    return Result
+})
