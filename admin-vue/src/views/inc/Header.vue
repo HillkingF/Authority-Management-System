@@ -8,12 +8,16 @@
 
       <!--下拉菜单-->
       <el-dropdown class="dropdown">
-            <span class="el-dropdown-link">
-              <!--传入用户名-->
-              {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
+        <span class="el-dropdown-link">
+          <!--传入用户名-->
+          {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人中心</el-dropdown-item>
+          <el-dropdown-item>
+            <!--<router-view></router-view>-->
+            <router-link :to="{name: 'userCenter'}">个人中心</router-link>
+            <!--<router-link to="/userCenter">个人中心</router-link>-->
+          </el-dropdown-item>
           <el-dropdown-item>退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -26,6 +30,8 @@
 </template>
 
 <script>
+import SideMenu from "@/views/inc/SideMenu";
+
 export default {
   name: "Header",
   data(){

@@ -8,6 +8,7 @@ import Login from '../views/Login.vue'  // 2.登录首页
 import Menu from "@/views/sys/Menu";
 import Role from "@/views/sys/Role";
 import User from "@/views/sys/User";
+import UserCenter from "@/views/UserCenter";
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,12 @@ const routes = [
         path: '/index',
         name: 'Index',
         component: Index
+      },
+      { // 下拉菜单的个人中心页
+        path: '/userCenter',
+        name: 'userCenter',
+        // component: ()=> import("@/views/UserCenter.vue")
+        component: UserCenter
       },
       {
         path: '/sys/users',
