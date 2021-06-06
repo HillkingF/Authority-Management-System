@@ -63,4 +63,5 @@ export default {
   line-height: 160px;
   height: 80%;
 }
+
 </style>

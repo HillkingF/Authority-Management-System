@@ -13,7 +13,7 @@
       <el-menu-item>
         <template slot="title">
           <i class="el-icon-s-home"></i>
-          <span><strong class="toolbar-title">主页</strong></span>
+          <span><strong class="toolbar-title">主页导航</strong></span>
         </template>
       </el-menu-item>
     </router-link>
@@ -87,7 +87,12 @@ export default {
 }
 
 .toolbar-title {
-  color: #FFA500;
+  color: moccasin;
+  font-size: large;
+}
+
+a {
+  text-decoration: none;
 }
 
 </style>

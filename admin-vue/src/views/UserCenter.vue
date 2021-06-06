@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>修改密码</h2>
-    <el-form :model="passFrom" status-icon :rules="rules" ref="passForm" label-width="100px" class="demo-ruleForm">
+    <el-form id="form1" :model="passForm" status-icon :rules="rules" ref="passForm" label-width="100px" class="demo-ruleForm">
+      <h2 id="tit1">修改密码</h2>
       <el-form-item label="旧密码" prop="currentPass">
         <el-input type="password" v-model="passForm.currentPass" autocomplete="off"></el-input>
       </el-form-item>
@@ -82,6 +82,7 @@ export default {
       });
     },
     resetForm(formName) {
+      console.log("重置")
       this.$refs[formName].resetFields();
     }
   }
@@ -89,8 +90,14 @@ export default {
 </script>
 
 <style scoped>
-.el_form{
+#form1{
+  /*text-align: center;*/
   width: 420px;
-  margin: 50px auto;
+  margin: -20px auto;
+}
+#tit1 {
+  margin-bottom: -20px;
+  color: cornflowerblue;
+  text-shadow: 1px 1px 8px sandybrown;
 }
 </style>

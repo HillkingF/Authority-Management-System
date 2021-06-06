@@ -1,6 +1,6 @@
 <template>
   <el-header id="header">
-    <strong>后台管理界面</strong>
+    <strong  id="nametitle">AMS后台管理</strong>
     <div class="headimg">
       <!--头像框-->
       <!--:src 传入用户头像-->
@@ -57,6 +57,12 @@ export default {
 </script>
 
 <style scoped>
+#nametitle {
+  float: left;
+  font-size: x-large;
+  color: darkkhaki;
+  text-shadow: 1px 1px 1px saddlebrown;
+}
 #header{
   background-color: palegoldenrod;
   color: #333;
@@ -105,6 +111,11 @@ export default {
   text-align: center;
   line-height: 60px;
   height: 20%;
+}
+
+/* 刪除下划线 */
+a {
+  text-decoration: none;
 }
 
 </style>
