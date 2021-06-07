@@ -12,6 +12,9 @@ export default new Vuex.Store({
     SET_TOKEN: (state, token) => {  // 将后端传来的token注入state属性进行存储
       state.token = token
       localStorage.setItem("token", token)
+    },
+    resetState: (state) => {
+      state.token = ''
     }
   },
   actions: {

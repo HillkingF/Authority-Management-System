@@ -39,3 +39,16 @@ Mock.mock('/sys/userInfo', "get", () =>  {
     }
     return Result
 })
+
+// 模拟退出 的数据
+Mock.mock('/logout', "post", () =>  {
+    return Result
+})
+
+
+Mock.mock('/sys/menu/nav', "post", () =>  {
+    let nav = []
+    let authoritys = []
+    
+    return Result
+})

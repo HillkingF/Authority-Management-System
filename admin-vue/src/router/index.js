@@ -9,6 +9,9 @@ import Menu from "@/views/sys/Menu";
 import Role from "@/views/sys/Role";
 import User from "@/views/sys/User";
 import UserCenter from "@/views/UserCenter";
+import {fromJson} from "cli-highlight";
+import axios from "axios"
+import {reset} from "colorette";
 
 Vue.use(VueRouter)
 
@@ -67,6 +70,22 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+// 在这里面判断不同用户的请求路径是否存在
+router.beforeEach((to, fromJson,  next) => {
+  axios.get("/sys/menu/nav", {
+    headers: {
+      Authorization: localStorage.getItem("token")
+    }
+  }).then(res => {
+    // 拿到 menuList
+
+
+    // 拿到用户权限
+
+  })
+  next()
 })
 
 export default router

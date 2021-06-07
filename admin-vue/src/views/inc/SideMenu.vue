@@ -10,7 +10,7 @@
 
     <!--导航栏标题-->
     <router-link to="/index">
-      <el-menu-item>
+      <el-menu-item index="0">
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span><strong class="toolbar-title">主页导航</strong></span>
@@ -19,50 +19,50 @@
     </router-link>
 
     <!--导航栏选项-->
-    <el-submenu index="1">
+    <el-submenu :index="menu.name" v-for="menu in menuList">
       <template slot="title">
-        <i class="el-icon-location"></i>
-        <span>系统管理</span>
+        <i :class="menu.icon"></i>   <!--将图标改成json数组中的值-->
+        <span>{{menu.title}}</span> <!--将导航名字改成json数组中的值-->
       </template>
 
-      <router-link to="/sys/users">
-        <el-menu-item index="1-1">
+      <router-link :to="item.path" v-for="item in menu.children">
+        <el-menu-item :index="item.name">
           <template slot="title">
-            <i class="el-icon-user"></i>
-            <span>用户管理</span>
+            <i :class="item.icon"></i>
+            <span>{{item.title}}</span>
           </template>
         </el-menu-item>
       </router-link>
-      <router-link to="/sys/roles">
-        <el-menu-item index="1-2">
-          <template slot="title">
-            <i class="el-icon-view"></i>
-            <span>角色管理</span>
-          </template>
-        </el-menu-item>
-      </router-link>
-      <router-link to="/sys/menus">
-        <el-menu-item index="1-3">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span>菜单管理</span>
-          </template>
-        </el-menu-item>
-      </router-link>
+      <!--<router-link to="/sys/roles">-->
+      <!--  <el-menu-item index="1-2">-->
+      <!--    <template slot="title">-->
+      <!--      <i class="el-icon-view"></i>-->
+      <!--      <span>角色管理</span>-->
+      <!--    </template>-->
+      <!--  </el-menu-item>-->
+      <!--</router-link>-->
+      <!--<router-link to="/sys/menus">-->
+      <!--  <el-menu-item index="1-3">-->
+      <!--    <template slot="title">-->
+      <!--      <i class="el-icon-menu"></i>-->
+      <!--      <span>菜单管理</span>-->
+      <!--    </template>-->
+      <!--  </el-menu-item>-->
+      <!--</router-link>-->
     </el-submenu>
 
-    <el-submenu index="2">
-      <template slot="title">
-        <i class="el-icon-s-tools"></i>
-        <span>系统工具</span>
-      </template>
-      <el-menu-item index="2-1">
-        <template slot="title">
-          <i class="el-icon-tickets"></i>
-          <span>数字字典</span>
-        </template>
-      </el-menu-item>
-    </el-submenu>
+    <!--<el-submenu index="2">-->
+    <!--  <template slot="title">-->
+    <!--    <i class="el-icon-s-tools"></i>-->
+    <!--    <span>系统工具</span>-->
+    <!--  </template>-->
+    <!--  <el-menu-item index="2-1">-->
+    <!--    <template slot="title">-->
+    <!--      <i class="el-icon-tickets"></i>-->
+    <!--      <span>数字字典</span>-->
+    <!--    </template>-->
+    <!--  </el-menu-item>-->
+    <!--</el-submenu>-->
 
 
   </el-menu>
@@ -70,7 +70,47 @@
 
 <script>
 export default {
-  name: "SideMenu"
+  name: "SideMenu",
+  data() {
+    return {
+      menuList: [
+        {
+          // 构建菜单栏的json数组
+          name: 'SysMange',
+          title: '系统管理',
+          icon: 'el-icon-location',
+          path: '',
+          children: [
+            {
+              name: 'SysUser',
+              title: '用户管理',
+              icon: 'el-icon-user',
+              path: '/sys/users',
+              children: []
+            }
+          ]
+        },
+        {
+          name: 'SysTools',
+          title: '系统工具',
+          icon: 'el-icon-s-tools',
+          path: '',
+          children: [
+            {
+              name: 'SysDict',
+              title: '数字字典',
+              icon: 'el-icon-tickets',
+              path: '/sys/dicts',
+              children: []
+            }
+          ]
+        }
+      ]
+    }
+  },
+  methods: {
+
+  }
 }
 </script>
 

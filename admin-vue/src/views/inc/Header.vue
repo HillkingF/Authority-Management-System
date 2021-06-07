@@ -14,11 +14,9 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
-            <!--<router-view></router-view>-->
             <router-link :to="{name: 'userCenter'}">个人中心</router-link>
-            <!--<router-link to="/userCenter">个人中心</router-link>-->
           </el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 
@@ -45,10 +43,23 @@ export default {
   },
   methods: { // 在methods中定义用户方法
     getUserInfo(){
-      this.$axios.get("/sys/userInfo").then(res=>{
+      // 发起请求,然后获取结果
+      this.$axios.get("/sys/userInfo").then(res =>{
         this.userInfo = res.data.data
       })
-    }
+    },
+    logout(){
+      // 发起退出请求,then获取此请求的返回结果
+      this.$axios.post("/logout").then(res => {
+        // 清除缓存状态
+        localStorage.clear()
+        sessionStorage.clear()
+        this.$store.commit("resetState")
+        // 进行页面跳转
+        this.$router.push("/login")
+
+      })
+    },
   },
   created() { // 接收调用用户方法
     this.getUserInfo()  // 页面加载的时候获取用户信息
