@@ -46,9 +46,51 @@ Mock.mock('/logout', "post", () =>  {
 })
 
 
-Mock.mock('/sys/menu/nav', "post", () =>  {
-    let nav = []
+Mock.mock('/sys/menu/nav', "get", () =>  {
+    // nav中是导航栏的信息
+    let nav = [
+        {
+            // 构建菜单栏的json数组
+            name: 'SysMange',
+            title: '系统管理',
+            icon: 'el-icon-location',
+            path: '',
+            component: '',
+            children: [
+                {
+                    name: 'SysUser',
+                    title: '用户管理',
+                    icon: 'el-icon-user',
+                    path: '/sys/users',
+                    component: 'sys/User',
+                    children: []
+                }
+            ]
+        },
+        {
+            name: 'SysTools',
+            title: '系统工具',
+            icon: 'el-icon-s-tools',
+            path: '',
+            component: '',
+            children: [
+                {
+                    name: 'SysDict',
+                    title: '数字字典',
+                    icon: 'el-icon-tickets',
+                    path: '/sys/dicts',
+                    component: '',
+                    children: []
+                }
+            ]
+        }
+    ]
+    // authoritys是用户权限信息
     let authoritys = []
-
+    // 将两个信息放到返回的结果中
+    Result.data = {
+        nav: nav,
+        authoritys: authoritys
+    }
     return Result
 })

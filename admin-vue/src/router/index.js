@@ -9,9 +9,9 @@ import Menu from "@/views/sys/Menu";
 import Role from "@/views/sys/Role";
 import User from "@/views/sys/User";
 import UserCenter from "@/views/UserCenter";
-import {fromJson} from "cli-highlight";
 import axios from "axios"
-import {reset} from "colorette";
+// 导入全局参数的目录store
+import store from "../store"
 
 Vue.use(VueRouter)
 
@@ -73,19 +73,24 @@ const router = new VueRouter({
 })
 
 // 在这里面判断不同用户的请求路径是否存在
+// 首先导入 import axios from "axios"
+// 然后在下面的router.beforeEach 导航钩子 中主要用来拦截导航，让它完成跳转或取消。
 router.beforeEach((to, fromJson,  next) => {
+  // axios.get: 发起获取左侧导航栏信息的请求
   axios.get("/sys/menu/nav", {
     headers: {
       Authorization: localStorage.getItem("token")
     }
   }).then(res => {
-    // 拿到 menuList
+    // 从mockjs中获取result返回值: nav和 authoritys
+    // 拿到 menuList信息 nav
+    store.commit("setMenuList", res.data.data.nav);
 
-
-    // 拿到用户权限
+    // 拿到用户权限: authoritys
+    store.commit("setPermList", res.data.data.authoritys);
 
   })
-  next()
+  next()  // 必须要有next()才会跳转
 })
 
 export default router
