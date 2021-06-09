@@ -49,6 +49,6 @@ Mock.mock('/logout', "post", () =>  {
 Mock.mock('/sys/menu/nav', "post", () =>  {
     let nav = []
     let authoritys = []
-    
+
     return Result
 })
