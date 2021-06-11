@@ -34,6 +34,9 @@ const routes = [
         // component: ()=> import("@/views/UserCenter.vue")
         component: UserCenter
       },
+        /**
+         * 由于需要动态绑定路由,
+         * 因此下面的三个子路由需要在router.beforeEach中实现
       {
         path: '/sys/users',
         name: 'SysUser',
@@ -49,14 +52,12 @@ const routes = [
         name: 'SysMenu',
         component: Menu
       }
+         **/
     ]
   },
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
@@ -76,21 +77,76 @@ const router = new VueRouter({
 // 首先导入 import axios from "axios"
 // 然后在下面的router.beforeEach 导航钩子 中主要用来拦截导航，让它完成跳转或取消。
 router.beforeEach((to, fromJson,  next) => {
-  // axios.get: 发起获取左侧导航栏信息的请求
-  axios.get("/sys/menu/nav", {
-    headers: {
-      Authorization: localStorage.getItem("token")
-    }
-  }).then(res => {
-    // 从mockjs中获取result返回值: nav和 authoritys
-    // 拿到 menuList信息 nav
-    store.commit("setMenuList", res.data.data.nav);
+  // 首先从store中获取hasRoute参数,判断导航栏路由状态是否更新了
+  let hasRoute = store.state.menus.hasRoute
+  // 如果还没有更新过,则进行更新
+  if(!hasRoute){
+    // axios.get: 发起获取左侧导航栏信息的请求
+    axios.get("/sys/menu/nav", {
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    }).then(res => {
+      // 从mockjs中获取result返回值: nav和 authoritys
+      // 拿到 menuList信息 nav
+      store.commit("setMenuList", res.data.data.nav);
 
-    // 拿到用户权限: authoritys
-    store.commit("setPermList", res.data.data.authoritys);
+      // 拿到用户权限: authoritys
+      store.commit("setPermList", res.data.data.authoritys);
 
-  })
-  next()  // 必须要有next()才会跳转
+      // 动态绑定路由
+      // 1.首先获取当前的路由newRoutes ,即 const routes ={}
+      let newRoutes = router.options.routes
+      // 2.循环遍历导航栏信息res.data.data.nav,获取其中的子导航项目进行绑定
+      res.data.data.nav.forEach(menu => {
+        // 3.判断如果此导航标题有子标题,循环获取并绑定每一个子标题
+        if(menu.children){
+          menu.children.forEach(submenu => {
+            // 4.路由转换: 在自定义的方法中实现 获取mockjs中的导航栏信息并转换成route的形式
+            let route = menuToRoute(submenu);
+            // 5.把路由添加到1获取的当前路由中:
+            if (route){
+              newRoutes[0].children.push(route)
+            }
+          })
+        }
+      })
+      // 将当前的新路由添加到 全局的router中
+      router.addRoutes(newRoutes)
+      // 改变hasRoute的状态
+      hasRoute = true
+      // 将状态更新到changeRouteStatus方法中保存
+      store.commit("changeRouteStatus", hasRoute)
+    })
+  }
+  // 最后必须要有next()才会跳转
+  next()
+
 })
 
+// 自定义实现路由转换的方法
+const menuToRoute = (menu) => {
+  // 1.首先判断 component 是否为空: 不为空才进行路由转换
+  if (!menu.component){ return null;}
+  // 2.component不为空,进行路由转换
+  let route = {
+    // 3.根据mockjs中的数据进行转换[这就是具体的转换过程]
+    // name: 'SysUser',
+    // title: '用户管理',
+    // icon: 'el-icon-user',
+    // path: '/sys/users',
+    // component: 'sys/User',
+    // children: []
+    name: menu.name,
+    path: menu.path,
+    meta: {
+      icon: menu.icon,
+      title: menu.title
+    }
+  }
+  // 3.component与上面的格式不同,所有进行单独转换
+  route.component = () => import('@/views/' + menu.component + '.vue')
+  // 4.最后返回转换后的路由部分
+  return route
+}
 export default router
