@@ -26,7 +26,7 @@
       </template>
 
       <router-link :to="item.path" v-for="item in menu.children">
-        <el-menu-item :index="item.name">
+        <el-menu-item :index="item.name" @click="selectMenu(item)">
           <template slot="title">
             <i :class="item.icon"></i>
             <span>{{item.title}}</span>
@@ -117,6 +117,10 @@ export default {
     }
   },
   methods: {
+    // 通过点击事件 向store参数表中传递 标签栏参数
+    selectMenu(item){
+      this.$store.commit("addTab", item)
+    }
 
   }
 }

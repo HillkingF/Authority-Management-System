@@ -11,6 +11,8 @@
         <Header></Header>
       </el-header>
       <el-main id="el-main">
+        <!--添加标签页-->
+        <Tabs></Tabs>
         <!--当浏览器请求/index会异步显示这部分局部页面-->
         <router-view></router-view>
       </el-main>
@@ -22,11 +24,13 @@
 // 1.引入SideMenu 侧边栏的包文件
 import SideMenu from "@/views/inc/SideMenu";
 import Header from "@/views/inc/Header";
+import Tabs from "./inc/Tabs";
 export default {
   name: "Home",
   components: {
     Header,
     SideMenu,
+    Tabs
   }
 }
 </script>
@@ -60,8 +64,9 @@ export default {
   background-color: lightgoldenrodyellow;
   color: #333;
   text-align: center;
-  line-height: 160px;
+  /*line-height: 160px;*/
   height: 80%;
+  padding: 0px;
 }
 
 </style>
