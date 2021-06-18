@@ -36,11 +36,15 @@ export default{
 
         // addTab(): 动态添加标签: 修改state参数表中的参数 editableTabs 和 editableTabsValue
         addTab(state, tab) {
+            //index = -1 表示此标签还没有出现过
+            let index = state.editableTabs.findIndex(e => e.name === tab.name)
+            if (index === -1){
+                state.editableTabs.push({
+                    title: tab.title,
+                    name: tab.name,
+                });
+            }
             state.editableTabsValue = tab.name;
-            state.editableTabs.push({
-                title: tab.title,
-                name: tab.name,
-            });
         },
     },
     actions: {
