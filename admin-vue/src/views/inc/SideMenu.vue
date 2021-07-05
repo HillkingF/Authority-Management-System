@@ -1,6 +1,7 @@
 <template>
+  <!--<el-menu>中:default-active 使得动态标签有高亮的显示效果-->
   <el-menu
-      default-active="2"
+      :default-active="this.$store.state.menus.editableTabsValue"
       class="menu_total el-menu-vertical-demo"
       background-color="#545c64"
       text-color="#fff"
@@ -19,13 +20,13 @@
     </router-link>
 
     <!--导航栏选项-->
-    <el-submenu :index="menu.name" v-for="menu in menuList">
+    <el-submenu v-for="menu in menuList" :key="menu" :index="menu.name">
       <template slot="title">
         <i :class="menu.icon"></i>   <!--将图标改成json数组中的值-->
         <span>{{menu.title}}</span> <!--将导航名字改成json数组中的值-->
       </template>
 
-      <router-link :to="item.path" v-for="item in menu.children">
+      <router-link :to="item.path" v-for="item in menu.children" :key="item">
         <el-menu-item :index="item.name" @click="selectMenu(item)">
           <template slot="title">
             <i :class="item.icon"></i>
@@ -113,7 +114,10 @@ export default {
     menuList: {
       get() {
         return this.$store.state.menus.menuList
-      }
+      },
+      // set(val) {
+      //   this.$store.state.menus.menuList = val
+      // }
     }
   },
   methods: {

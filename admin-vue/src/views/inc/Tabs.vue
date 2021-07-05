@@ -5,7 +5,9 @@
         v-for="(item, index) in editableTabs"
         :key="item.name"
         :label="item.title"
-        :name="item.name" >
+        :name="item.name"
+        :index="index"
+    >
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -18,7 +20,8 @@ export default {
     return {
       // editableTabsValue: this.$store.state.menus.editableTabsValue,
       // editableTabs: this.$store.state.menus.editableTabs
-    }
+
+     }
   },
   // computed 可以动态监听值的变化 : get() 和 set() 要一起出现
   computed: {
