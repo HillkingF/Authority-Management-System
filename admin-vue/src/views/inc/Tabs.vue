@@ -1,12 +1,11 @@
 <template>
   <!--el-tabs从element粘贴-->
-  <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+  <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" @tab-click="clickTab">
     <el-tab-pane
         v-for="(item, index) in editableTabs"
         :key="item.name"
         :label="item.title"
         :name="item.name"
-        :index="index"
     >
     </el-tab-pane>
   </el-tabs>
@@ -54,6 +53,9 @@ export default {
     removeTab(targetName) {
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
+      if (targetName === 'Index'){
+        return
+      }
       if (activeName === targetName) {
         tabs.forEach((tab, index) => {
           if (tab.name === targetName) {
@@ -64,9 +66,12 @@ export default {
           }
         });
       }
-
       this.editableTabsValue = activeName;
       this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      this.$router.push({name: activeName})
+    },
+    clickTab(target) {
+      this.$router.push({name: target.name})
     }
   }
 }

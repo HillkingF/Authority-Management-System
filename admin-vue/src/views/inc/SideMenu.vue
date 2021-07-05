@@ -11,7 +11,7 @@
 
     <!--导航栏标题-->
     <router-link to="/index">
-      <el-menu-item index="0" @click="selectMenu({name:'Index', title:'首页'})">
+      <el-menu-item :index="Index" @click="selectMenu({name:'Index', title:'首页'})">
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span><strong class="toolbar-title">主页导航</strong></span>

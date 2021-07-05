@@ -13,8 +13,10 @@
       <el-main id="el-main">
         <!--添加标签页-->
         <Tabs></Tabs>
-        <!--当浏览器请求/index会异步显示这部分局部页面-->
-        <router-view></router-view>
+        <div style="margin: 0 15px;">
+          <!--当浏览器请求/index会异步显示这部分局部页面-->
+          <router-view/>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -63,10 +65,10 @@ export default {
 #el-main {
   background-color: lightgoldenrodyellow;
   color: #333;
-  text-align: center;
+  text-align: left; /*居中显示*/;
   /*line-height: 160px;*/
   height: 80%;
-  padding: 0px;
+  padding: 0;
 }
 
 </style>

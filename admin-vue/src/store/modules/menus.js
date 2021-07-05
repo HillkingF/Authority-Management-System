@@ -46,6 +46,19 @@ export default{
             }
             state.editableTabsValue = tab.name;
         },
+
+        // 下拉菜单的退出
+        resetState: (state) => {
+            state.menuList = []
+            state.permList = []
+            state.hasRoute = false
+            state.editableTabsValue = 'Index'
+            state.editableTabsValue = 'Index'
+            state.editableTabs = [{
+                title: '首页',
+                name: 'Index',
+            }]
+        }
     },
     actions: {
     }
