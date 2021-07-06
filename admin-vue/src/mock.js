@@ -111,3 +111,60 @@ Mock.mock('/sys/menu/nav', "get", () =>  {
     }
     return Result
 })
+
+// 菜单管理界面主体部分,树形表单项数据模拟
+Mock.mock('/sys/menu/list', 'get', ()=>{
+    let menus = [
+        {
+            "id": 1,
+            "created": "2021-01-15T18:58:18",
+            "updated": "2021-01-15T18:58:20",
+            "statu": 1,
+            "parentId": 0,
+            "name": "系统管理",
+            "path": "",
+            "perms": "sys:manage",
+            "component": "",
+            "type": 0,
+            "icon": "el-icon-s-operation",
+            "orderNum": 1,
+            "children": [
+                {
+                    "id": 2,
+                    "created": "2021-01-15T19:58:18",
+                    "updated": "2021-01-15T19:58:20",
+                    "statu": 1,
+                    "parentId": 1,
+                    "name": "用户管理",
+                    "path": "/sys/users",
+                    "perms": "sys:user:list",
+                    "component": "sys/User",
+                    "type": 1,
+                    "icon": "el-icon-s-custom",
+                    "orderNum": 1,
+                    "children": []
+                },
+                {
+                    "id": 3,
+                    "created": "2021-01-15T20:58:18",
+                    "updated": "2021-01-15T20:58:20",
+                    "statu": 1,
+                    "parentId": 1,
+                    "name": "角色管理",
+                    "path": "/sys/roles",
+                    "perms": "sys:role:list",
+                    "component": "sys/Role",
+                    "type": 1,
+                    "icon": "el-icon-rank",
+                    "orderNum": 2,
+                    "children": []
+                },
+
+            ]
+
+
+        }
+    ]
+    Result.data = menus
+    return Result
+})
