@@ -23,8 +23,8 @@ Mock.mock('/captcha', "get", () =>  {
 
 //模拟'/login'请求的返回结果:即模拟用户登录信息响应
 Mock.mock('/login', "post", () =>  {
-    Result.code=401
-    Result.msg = "验证码错误"
+    Result.code=200   // 这里设置成200就可以进入主页, 设置成401就无法进入主页
+    Result.msg = "正确"
     // 无法在header中传入jwt
     return Result
 })
@@ -166,5 +166,30 @@ Mock.mock('/sys/menu/list', 'get', ()=>{
         }
     ]
     Result.data = menus
+    return Result
+})
+
+
+
+Mock.mock(RegExp('/sys/menu/info/*'), 'get', ()=>{
+    Result.data = {
+        "id": 3,
+        "statu": 1,
+        "parentId": 1,
+        "name": "角色管理",
+        "path": "/sys/roles",
+        "perms": "sys:role:list",
+        "component": "sys/Role",
+        "type": 1,
+        "icon": "el-icon-rank",
+        "orderNum": 2,
+        "children": []
+
+    }
+    return Result
+})
+
+// 菜单主界面  新增后 提交后的返回值
+Mock.mock(RegExp('/sys/menu/*'), 'post', ()=>{
     return Result
 })

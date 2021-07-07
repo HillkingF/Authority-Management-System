@@ -210,10 +210,9 @@ export default {
       this.$refs[formName].validate((valid) =>{
         // 判断表单数据是否有效
         if (valid){
-          this.$axios.post('/sys/menu/' + (this.editForm.id? 'update': 'save'), this.editForm)
-            .then(res => {
+          this.$axios.post('/sys/menu/' + (this.editForm.id? 'update': 'save'), this.editForm).then(res => {
               this.$message({
-                showClose: true,
+                showClose: 'true',
                 message: '恭喜你, 操作成功',
                 type: 'success',
                 onClose:() =>{  // 回调后端信息
@@ -228,9 +227,11 @@ export default {
         }
       });
     },
-    editHandle(id){
-      this.$axios.get('/sys/menu/info' + id).then(res => {
-        this.editForm = res.data.data()
+    editHandle(id){  // 点击`编辑`按钮后触发这个事件
+      // 先通过下面的请求获取这一行的基本信息
+      this.$axios.get('/sys/menu/info/' + id).then(res => {
+        // 将获取到的这个信息传入对话框  并显示对话框
+        this.editForm = res.data.data
         this.dialogVisible = true
       })
     }

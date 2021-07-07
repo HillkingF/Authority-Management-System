@@ -86,6 +86,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) { // 如果校验成功可以登录
+          console.log("有效")
           // 设置登录成功后的效果:从this.loginForm获取前端的结果
           // ajax技术实现了网页的局部数据刷新，axios实现了对ajax的封装。axios：提供了一些并发请求的接口（重要，方便了很多的操作）
           this.$axios.post('/login', this.loginForm).then(res =>{
