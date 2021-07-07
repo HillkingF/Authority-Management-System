@@ -4,7 +4,8 @@
     <el-form :inline="true">
       <el-form-item>
         <!--@click="dialogVisible=true": 点击按钮,弹窗状态变成可见从而显示-->
-        <el-button type="primary" @click="dialogVisible=true">新增</el-button>
+        <el-button type="primary" @click="newopen('editForm')">新增</el-button>
+        <!--dialogVisible=true-->
       </el-form-item>
     </el-form>
     <!--树形表单部分-->
@@ -78,7 +79,8 @@
           <el-divider direction="vertical"></el-divider>
           <!--弹框再次确认删除-->
           <template>
-            <el-popconfirm title="是否删除?">
+            <!--@confirm是饿了么中一个内置事件,意思是:点击确认按钮时触发.(触发删除事件)-->
+            <el-popconfirm title="是否删除?" @confirm="delHandle(scope.row.id)">
               <el-button type="text" slot="reference">删除</el-button>
             </el-popconfirm>
           </template>
@@ -93,8 +95,9 @@
         title="提示"
         :visible.sync="dialogVisible"
         width="600px"
+        :before-close="handleClose"
         >
-      <!--:before-close="handleClose"-->
+
       <!--在弹窗中显示表单-->
       <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
 
@@ -233,6 +236,37 @@ export default {
         // 将获取到的这个信息传入对话框  并显示对话框
         this.editForm = res.data.data
         this.dialogVisible = true
+      })
+    },
+
+    // 重置或者清除弹窗中表单内容的方法
+    resetForm(formName){
+      this.$refs[formName].resetFields(); //清空表单
+      this.dialogVisible = true;  // 隐藏弹窗
+      this.editForm = {}  // 将装载表单数据的变量设置为null
+    },
+
+    // 点击新增的时候,清空弹窗表格,显示空白表格
+    newopen(formName){
+      this.dialogVisible = true;  // 隐藏弹窗
+      this.$refs[formName].resetFields(); //清空表单
+      this.editForm = {}  // 将装载表单数据的变量设置为null
+    },
+    // handleClose() {
+    //   this.resetForm('editForm');
+    // }
+
+    // 点击`删除` 按钮清除表格项
+    delHandle(id){
+      this.$axios.post('/sys/menu/delete/' + id).then(res => {
+        this.$message({
+          showClose: 'true',
+          message: '恭喜你, 操作成功',
+          type: 'success',
+          onClose:() =>{  // 回调后端信息
+            this.getMenuTree() // 重新获取后端传来的表单数据
+          }
+        });
       })
     }
   }

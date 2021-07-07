@@ -170,7 +170,7 @@ Mock.mock('/sys/menu/list', 'get', ()=>{
 })
 
 
-
+// 模拟主体界面  编辑  更新本行数据后的结果
 Mock.mock(RegExp('/sys/menu/info/*'), 'get', ()=>{
     Result.data = {
         "id": 3,
@@ -191,5 +191,66 @@ Mock.mock(RegExp('/sys/menu/info/*'), 'get', ()=>{
 
 // 菜单主界面  新增后 提交后的返回值
 Mock.mock(RegExp('/sys/menu/*'), 'post', ()=>{
+    return Result
+})
+
+
+// 模拟角色管理  界面主体部分,表单项数据模拟
+Mock.mock(RegExp('/sys/role/list*'), 'get', ()=>{
+    Result.data = {
+        "records": [
+            {
+                "id": 3,
+                "created": "2021-01-15T18:58:18",
+                "updated": "2021-01-15T18:58:20",
+                "statu": 1,
+                "name": "普通用户",
+                "code" : "normal",
+                "remark" : "只有基本查看功能",
+                "menuIds" : []
+
+            },
+            {
+                "id": 6,
+                "created": "2021-01-15T18:58:18",
+                "updated": "2021-01-15T18:58:20",
+                "statu": 1,
+                "name": "超级管理员",
+                "code" : "admin",
+                "remark" : "拥有所有功能",
+                "menuIds" : []
+            }
+        ],
+        "total": 2,
+        "size": 10,
+        "current" : 1,
+        "orders" : [],
+        "optimizeCountSql" : true,
+        "hitCount": false,
+        "countId" : null,
+        "maxLimit": null,
+        "searchCount" : true,
+        "pages": 1
+    }
+    return Result
+})
+
+// 角色管理主界面  的返回值
+Mock.mock(RegExp('/sys/role/info/*'), 'get', ()=>{
+    Result.data = {
+        "id": 6,
+        "created": "2021-01-15T18:58:18",
+        "updated": "2021-01-15T18:58:20",
+        "statu": 1,
+        "name": "超级管理员",
+        "code": "admin",
+        "remark": "系统默认最高权限,不可以编辑和任意修改",
+        "menuIds": []
+    }
+    return Result
+})
+
+// 菜单主界面  新增后 提交后的返回值
+Mock.mock(RegExp('/sys/role/*'), 'post', ()=>{
     return Result
 })
