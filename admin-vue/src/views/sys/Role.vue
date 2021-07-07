@@ -274,7 +274,7 @@ export default {
     },
 
     // 点击`删除` 按钮清除表格项
-    // 注意这里可能是
+    // 注意这里可能是批量删除,所以需要将id变成一个数组,而不是一个简单的变量
     delHandle(id){
 
       this.$axios.post('/sys/role/delete/' + id).then(res => {
