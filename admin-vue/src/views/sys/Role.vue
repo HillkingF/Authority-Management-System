@@ -25,11 +25,10 @@
         <el-button type="primary" @click="dialogVisible=true">新增</el-button>
       </el-form-item>
 
-      <!--批量删除按钮-->
-      <el-form-item title="确定批量删除吗?" @confirm="">
-        <!--slot="reference"这个属性暂时不能加到下面,不显示按钮了-->
-        <el-button type="danger"  :disabled="delBtlStatu">批量删除</el-button>
-      </el-form-item>
+      <!--@confirm是饿了么中一个内置事件,意思是:点击确认按钮时触发.(触发删除事件)-->
+      <el-popconfirm title="是否批量删除?" @confirm="delHandle(null)">
+        <el-button type="danger" slot="reference" :disabled="delBtlStatu">批量删除</el-button>
+      </el-popconfirm>
 
     </el-form>
 
@@ -161,6 +160,7 @@ export default {
 
       // tableData 是主体表格的参数========================
       tableData: [],
+      multipleSelection: [], //用于批量删除的变量
 
       // 分页部分的参数 ==================================
       total: 0,
@@ -202,15 +202,22 @@ export default {
       }
     },
     handleSelectionChange(val) {
+      console.log(val);
       this.multipleSelection = val;
+      // 根据选项数组的长度判断是否将 批量删除的按钮禁用
+      this.delBtlStatu = (val.length === 0);
     },
 
     // 分页部分的方法 ======================================================
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      this.size = val;
+      this.getRoleList();
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.current = val;
+      this.getRoleList();
     },
 
     // 弹窗部分的方法 =====================================================
@@ -274,10 +281,22 @@ export default {
     },
 
     // 点击`删除` 按钮清除表格项
-    // 注意这里可能是批量删除,所以需要将id变成一个数组,而不是一个简单的变量
+    // 注意这里可能是批量删除,所以需要将id放入一个数组,而不是直接删除一个简单的变量
     delHandle(id){
+      var ids = []
 
-      this.$axios.post('/sys/role/delete/' + id).then(res => {
+      // 判断id是一个还是多个,多个需要循环删除
+      if(id){
+        ids.push(id);
+      }else{
+        this.multipleSelection.forEach(row => {
+          ids.push(row.id)
+        })
+      }
+
+      console.log(ids)
+
+      this.$axios.post('/sys/role/delete' + ids).then(res => {
         this.$message({
           showClose: 'true',
           message: '恭喜你, 操作成功',
