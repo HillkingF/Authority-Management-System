@@ -79,7 +79,7 @@
           label="操作">
         <!--采用饿了么表单中的插槽属性,-->
         <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.row.id)">分配权限</el-button>
+          <el-button type="text" @click="permHandle(scope.row.id)">分配权限</el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button type="text" @click="editHandle(scope.row.id)">编辑</el-button>
           <el-divider direction="vertical"></el-divider>
@@ -108,6 +108,7 @@
     </el-pagination>
 
     <!--============================弹窗部分==========================-->
+    <!--1.新增按钮的弹窗-->
     <el-dialog
         title="提示"
         :visible.sync="dialogVisible"
@@ -143,6 +144,22 @@
 
     </el-dialog>
 
+    <!--2.分配权限的弹窗-->
+    <el-dialog title="分配权限" :visible.sync="permDialogVisible" width="600px">
+      <el-form :model="permForm">
+        <el-tree :data="permTreeData"
+                 show-checkbox
+                 ref="permTree"
+                 node-key="id"
+                 :default-expand-all=true
+                 :check-strictly=true
+                 :props="defaultProps"></el-tree>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="permDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitPermFormHandle('permForm')">确 定</el-button>
+      </span>
+    </el-dialog>
 
 
 
@@ -167,7 +184,7 @@ export default {
       size: 10,
       current: 1,
 
-      // 弹窗部分的参数===================================
+      // 新增按钮 弹窗部分的参数============================
       dialogVisible: false,  // 弹窗是否显示
       editForm: {            // 弹窗表格数据
       },
@@ -183,12 +200,24 @@ export default {
         ],
       },
 
+      // 分配权限的弹窗 参数 ================================
+      permDialogVisible: false,
+      permForm: {},
+      defaultProps: {
+        children: 'children',
+        label: 'name'
+      },
+      permTreeData: []
+
 
     }
   },
   // 使用created钩子,在html完成渲染前调用下面的方法显示后端数据
   created() {
     this.getRoleList();
+    this.$axios.get('/sys/menu/list').then(res => {
+      this.permTreeData = res.data.data
+    })
   },
   methods: {
     // 行内表单部分的方法===================================================
@@ -220,7 +249,7 @@ export default {
       this.getRoleList();
     },
 
-    // 弹窗部分的方法 =====================================================
+    // 新增按钮 弹窗部分的方法 =====================================================
     // 重置或者清除弹窗中表单内容的方法
     resetForm(formName){
       this.$refs[formName].resetFields(); //清空表单
@@ -306,7 +335,34 @@ export default {
           }
         });
       })
-    }
+    },
+
+    // 分配权限 弹窗部分的方法 =====================================================
+    permHandle(id){
+      this.permDialogVisible = true
+      this.$axios.get("/sys/role/info/" + id).then(res =>{
+        this.$refs.permTree.setCheckedKeys(res.data.data.menuIds);
+        this.permForm = res.data.data
+      })
+    },
+    submitPermFormHandle(formName){ // 权限分配 弹窗中的 提交按钮触发事件
+      var menuIds = this.$refs.permTree.getCheckedKeys()
+      console.log(menuIds)
+      // 提交信息要发出请求
+      this.$axios.post("/sys/role/perm/" + this.permForm.id,  menuIds).then(res =>{
+        this.$message({
+          showClose: 'true',
+          message: '恭喜你, 操作成功',
+          type: 'success',
+          onClose:() =>{  // 回调后端信息
+            this.getRoleList() // 重新获取后端传来的表单数据
+          }
+        });
+        this.permDialogVisible = false
+      })
+
+    },
+
 
   }
 }

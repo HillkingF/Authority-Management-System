@@ -245,7 +245,7 @@ Mock.mock(RegExp('/sys/role/info/*'), 'get', ()=>{
         "name": "超级管理员",
         "code": "admin",
         "remark": "系统默认最高权限,不可以编辑和任意修改",
-        "menuIds": []
+        "menuIds": [3]
     }
     return Result
 })
