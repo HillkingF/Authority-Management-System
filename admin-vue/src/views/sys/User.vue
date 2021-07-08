@@ -22,13 +22,13 @@
 
       <!--新增按钮-->
       <el-form-item>
-        <el-button type="primary" @click="dialogVisible=true">新增</el-button>
+        <el-button type="primary" @click="dialogVisible=true" v-if="hasAuth('sys:user:save')">新增</el-button>
       </el-form-item>
 
       <!--@confirm是饿了么中一个内置事件,意思是:点击确认按钮时触发.(触发删除事件)-->
       <el-form-item>
         <el-popconfirm title="是否批量删除?" @confirm="delHandle(null)">
-          <el-button type="danger" slot="reference" :disabled="delBtlStatu">批量删除</el-button>
+          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')")>批量删除</el-button>
         </el-popconfirm>
       </el-form-item>
 

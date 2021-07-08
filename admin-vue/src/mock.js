@@ -103,7 +103,7 @@ Mock.mock('/sys/menu/nav', "get", () =>  {
         }
     ]
     // authoritys是用户权限信息
-    let authoritys = []
+    let authoritys = ['sys:user:list', "sys:user:save", "sys:suer:delete"]
     // 将两个信息放到返回的结果中
     Result.data = {
         nav: nav,
