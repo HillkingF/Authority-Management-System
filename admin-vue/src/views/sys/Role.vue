@@ -152,7 +152,7 @@
                  ref="permTree"
                  node-key="id"
                  :default-expand-all=true
-                 :check-strictly=true
+                 :checkStrictly=true
                  :props="defaultProps"></el-tree>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -207,7 +207,8 @@ export default {
         children: 'children',
         label: 'name'
       },
-      permTreeData: []
+      permTreeData: [],
+      checkStrictly: true
 
 
     }
