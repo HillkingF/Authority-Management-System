@@ -29,7 +29,7 @@
               <el-input v-model="loginForm.code" placeholder="Check Code" class="inputcode inputtext"></el-input>
               <!--这个元素用于防止校验码图像,src是图像路径-->
               <!--开发验证码功能,设置参数v-bing:src=captchaImg-->
-              <el-image :src="captchaImg" class="codeimg" ></el-image>
+              <el-image :src="captchaImg" class="codeimg" @click="getCaptcha"></el-image>
             </el-form-item>
 
             <!--<el-form-item>-->
@@ -122,8 +122,8 @@ export default {
         this.loginForm.token = res.data.data.token  // res.data表示结果, 第二个data表示结果中的属性data
         // 获取验证码图像
         this.captchaImg = res.data.data.captchaImg
-        console.log(this.loginForm.token)
-        console.log(this.captchaImg)
+        // 每当获得一个新的验证码,就将验证码旁边的文本框清空
+        this.loginForm.code = ''
       })
     }
 
