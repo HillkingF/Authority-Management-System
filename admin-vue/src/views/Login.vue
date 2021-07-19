@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import qs from 'qs';
 export default {
   name: "Login",
   data() {
@@ -87,9 +88,11 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) { // 如果校验成功可以登录
           console.log("有效")
+
           // 设置登录成功后的效果:从this.loginForm获取前端的结果
           // ajax技术实现了网页的局部数据刷新，axios实现了对ajax的封装。axios：提供了一些并发请求的接口（重要，方便了很多的操作）
-          this.$axios.post('/login', this.loginForm).then(res =>{
+          // qs.stringify(this.loginForm): 由于后端传来的数据是表单格式的,因此要进行序列化成json传输.所以使用qs进行序列化
+          this.$axios.post('/login?'+qs.stringify(this.loginForm)).then(res =>{
             // 登录校验成功后,服务器会将JWT封装在header中并返回给客户端,
             // 客户端应该将jwt信息保存.之后每一次访问都将jwt发给后端用来快速验证
             const jwt = res.headers['authorization']  // 1.获取jwt
