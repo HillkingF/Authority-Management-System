@@ -5,8 +5,8 @@ import {createConfig} from "http-proxy-middleware/dist/config-factory";
 import {responseInterceptor} from "http-proxy-middleware";
 
 // 定义axios的全局URL,不能与项目的url一样8080, 所以这里设置成8081端口
-// 这里暂时先不用这个url
-// axios.defaults.baseURL = "http://localhost:8081"
+// 使用mockjs时注释,否则不注释
+axios.defaults.baseURL = "http://localhost:8081"
 
 
 

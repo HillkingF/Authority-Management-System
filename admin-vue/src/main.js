@@ -16,7 +16,7 @@ import global from './globalFun'
 
 Vue.prototype.$axios = axios
 // 手动3: 引入mock数据,用来编写随机数据的api
-require("./mock.js") //引入mock数据，关闭则注释该行
+// require("./mock.js") //引入mock数据，关闭则注释该行
 
 Vue.config.productionTip = false
 
