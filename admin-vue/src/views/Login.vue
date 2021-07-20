@@ -23,7 +23,7 @@
               <el-input v-model="loginForm.username" placeholder="Username" class="inputtext"></el-input>
             </el-form-item>
             <el-form-item label="密  码"  class="label-font" prop="password">
-              <el-input  v-model="loginForm.password" placeholder="Password" class="inputtext"></el-input>
+              <el-input  v-model="loginForm.password" type="password" placeholder="Password" class="inputtext"></el-input>
             </el-form-item>
             <el-form-item label="验证码" class="label-font-code" prop="code" >
               <el-input v-model="loginForm.code" placeholder="Check Code" class="inputcode inputtext"></el-input>
