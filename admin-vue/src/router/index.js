@@ -73,6 +73,13 @@ const router = new VueRouter({
   routes
 })
 
+//重复点击导航时，控制台会报错.增加下面这段代码防止重复点击报错
+const VueRouterPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (to) {
+  return VueRouterPush.call(this, to).catch(err => err)
+}
+
+
 // 在这里面判断不同用户的请求路径是否存在
 // 首先导入 import axios from "axios"
 // 然后在下面的router.beforeEach 导航钩子 中主要用来拦截导航，让它完成跳转或取消。

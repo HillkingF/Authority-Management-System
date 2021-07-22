@@ -115,7 +115,7 @@ export default {
     },
     // 捕获验证码图片的方法
     getCaptcha(){
-      console.log("daying");
+      console.log("[前端获取验证码......]");
       // 点击验证码图片位置向后端发起异步请求,刷新创建新的验证码图片
       this.$axios.get('/captcha').then(res =>{
         // 获取验证码对应的随机码
@@ -124,6 +124,7 @@ export default {
         this.captchaImg = res.data.data.captchaImg
         // 每当获得一个新的验证码,就将验证码旁边的文本框清空
         this.loginForm.code = ''
+        console.log("前端得到的验证码是:" + this.loginForm.token);
       })
     }
 
