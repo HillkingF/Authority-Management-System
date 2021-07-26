@@ -26,10 +26,11 @@
       </el-form-item>
 
       <!--@confirm是饿了么中一个内置事件,意思是:点击确认按钮时触发.(触发删除事件)-->
+      <el-form-item>
       <el-popconfirm title="是否批量删除?" @confirm="delHandle(null)">
         <el-button type="danger" slot="reference" :disabled="delBtlStatu">批量删除</el-button>
       </el-popconfirm>
-
+      </el-form-item>
     </el-form>
 
     <!--============================主体表格部分==========================-->
@@ -278,6 +279,7 @@ export default {
         this.current = res.data.data.current
         this.total = res.data.data.total
       })
+      console.log(this.tableData)
     },
 
     submitForm(formName){ //弹窗表单数据提交到后台,并更新页面显示 的方法
@@ -294,6 +296,7 @@ export default {
               }
             });
             this.dialogVisible = false;
+            this.resetForm(formName)
           })
         }else{
           console.log('error submit !');
@@ -316,17 +319,18 @@ export default {
       var ids = []
 
       // 判断id是一个还是多个,多个需要循环删除
-      if(id){
-        ids.push(id);
-      }else{
+      if (id) {
+        ids.push(id)
+      } else {
         this.multipleSelection.forEach(row => {
           ids.push(row.id)
         })
       }
 
       console.log(ids)
-
-      this.$axios.post('/sys/role/delete' + ids).then(res => {
+      console.log('/sys/role/delete' + ids)
+      this.$axios.post('/sys/role/delete', ids).then(res => {
+        console.log("批量删除或删除!");
         this.$message({
           showClose: 'true',
           message: '恭喜你, 操作成功',
@@ -360,6 +364,7 @@ export default {
           }
         });
         this.permDialogVisible = false
+        this.resetForm(formName)
       })
 
     },

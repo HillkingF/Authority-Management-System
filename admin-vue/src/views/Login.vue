@@ -58,9 +58,9 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '',
-        password: '',
-        code: '',
+        username: 'admin',  // 这里暂时固定为admin是为了方便程序测试
+        password: '111', // 这里暂时固定为111是为了方便程序测试
+        code: '11111', // 这里暂时固定为11111是为了方便程序测试
         // token用于获取验证码生成的随机码
         token: ''
       },
@@ -85,6 +85,7 @@ export default {
   },
   methods: {
     submitForm(formName) {
+      console.log(this.loginForm)
       this.$refs[formName].validate((valid) => {
         if (valid) { // 如果校验成功可以登录
           console.log("有效")
