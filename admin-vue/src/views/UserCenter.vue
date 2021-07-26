@@ -1,7 +1,10 @@
 <template>
   <div>
+
     <el-form id="form1" :model="passForm" status-icon :rules="rules" ref="passForm" label-width="100px" class="demo-ruleForm">
-      <h2 id="tit1">修改密码</h2>
+      <el-form-item>
+        <h1 id="tit1" >修改密码</h1>
+      </el-form-item>
       <el-form-item label="旧密码" prop="currentPass">
         <el-input type="password" v-model="passForm.currentPass" autocomplete="off"></el-input>
       </el-form-item>
@@ -11,7 +14,7 @@
       <el-form-item label="确认密码" prop="checkPass">
         <el-input type="password" v-model="passForm.checkPass" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item id="button2">
         <el-button type="primary" @click="submitForm('passForm')">提交</el-button>
         <el-button @click="resetForm('passForm')">重置</el-button>
       </el-form-item>
@@ -99,5 +102,11 @@ export default {
   margin-bottom: -20px;
   color: cornflowerblue;
   text-shadow: 1px 1px 8px sandybrown;
+  text-align: center;
+  font-size: x-large;
+  /*font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;*/
+}
+#button2{
+  text-align: center;
 }
 </style>
