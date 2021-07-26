@@ -19,7 +19,7 @@
             name: to.name,
             title: to.meta.title
           }
-          this.$store.commit("abbTab", obj)
+          this.$store.commit("addTab", obj)
         }
       }
     }

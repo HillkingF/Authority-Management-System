@@ -11,7 +11,8 @@
 
     <!--导航栏标题-->
     <router-link to="/index">
-      <el-menu-item :index="Index" @click="selectMenu({name:'Index', title:'首页'})">
+      <el-menu-item @click="selectMenu({name:'Index', title:'首页'})">
+        <!--:index="Index"-->
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span><strong class="toolbar-title">主页导航</strong></span>
@@ -123,7 +124,9 @@ export default {
   methods: {
     // 通过点击事件 向store参数表中传递 标签栏参数
     selectMenu(item){
+      console.log("点击选项1>...........")
       this.$store.commit("addTab", item)
+      console.log("点击完成选项1>...........")
     }
 
   }

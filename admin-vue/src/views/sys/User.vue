@@ -28,7 +28,7 @@
       <!--@confirm是饿了么中一个内置事件,意思是:点击确认按钮时触发.(触发删除事件)-->
       <el-form-item>
         <el-popconfirm title="是否批量删除?" @confirm="delHandle(null)">
-          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')")>批量删除</el-button>
+          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('sys:user:delete')">批量删除</el-button>
         </el-popconfirm>
       </el-form-item>
 
@@ -66,7 +66,7 @@
           prop="code"
           label="角色名称">
         <template slot-scope="scope">
-          <el-tag size="small" type="info" v-for="item in scope.row.roles">{{item.name}}</el-tag>
+          <el-tag size="small" type="info" v-for="item in scope.row.sysRoles">{{item.name}}</el-tag>
         </template>
       </el-table-column>
 
@@ -92,7 +92,7 @@
       <el-table-column
           prop="created"
           width="200"
-          label="创建事件">
+          label="创建时间">
       </el-table-column>
 
       <el-table-column
@@ -141,22 +141,25 @@
 
       <!--在弹窗中显示表单-->
       <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
-        <el-form-item label="角色名称" prop="name" label-width="100px">
-          <el-input v-model="editForm.name" autocomlete="off"></el-input>
+        <el-form-item label="用户名" prop="username" label-width="100px">
+          <el-input v-model="editForm.username" autocomplete="off"></el-input>
+          <el-alert
+              title="初始密码为888888"
+              :closable="false"
+              type="info"
+              style="line-height: 12px;"
+          ></el-alert>
         </el-form-item>
-
-        <el-form-item label="唯一编码" prop="code" label-width="100px">
-          <el-input v-model="editForm.code" autocomlete="off"></el-input>
+        <el-form-item label="邮箱"  prop="email" label-width="100px">
+          <el-input v-model="editForm.email" autocomplete="off"></el-input>
         </el-form-item>
-
-        <el-form-item label="描述" prop="remark" label-width="100px">
-          <el-input v-model="editForm.remark" autocomlete="off"></el-input>
+        <el-form-item label="手机号"  prop="phone" label-width="100px">
+          <el-input v-model="editForm.phone" autocomplete="off"></el-input>
         </el-form-item>
-
-        <el-form-item label="状态" prop="statu" label-width="100px">
+        <el-form-item label="状态"  prop="statu" label-width="100px">
           <el-radio-group v-model="editForm.statu">
-            <el-radio :label=0>禁用</el-radio>
-            <el-radio :label=1>正常</el-radio>
+            <el-radio :label="0">禁用</el-radio>
+            <el-radio :label="1">正常</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -165,27 +168,30 @@
           <el-button @click="resetForm('editForm')">重置</el-button>
         </el-form-item>
       </el-form>
-
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="resetForm('editForm')">取 消</el-button>
+        <el-button type="primary" @click="submitForm('editForm')">确 定</el-button>
+      </div>
     </el-dialog>
 
     <!--2.分配权限的弹窗-->
     <el-dialog title="分配角色" :visible.sync="roleDialogFormVisible" width="600px">
       <el-form :model="roleForm">
-        <el-tree :data="roleTreeData"
-                 show-checkbox
-                 ref="roleTree"
-                 node-key="id"
-                 :default-expand-all=true
-                 :check-strictly=true
-                 :props="defaultProps"></el-tree>
+        <el-tree
+            :data="roleTreeData"
+            show-checkbox
+            ref="roleTree"
+            :check-strictly=checkStrictly
+            node-key="id"
+            :default-expand-all=true
+            :props="defaultProps">
+        </el-tree>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="roleDialogFormVisible = false">取 消</el-button>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="roleDialogFormVisible=false">取 消</el-button>
         <el-button type="primary" @click="submitRoleHandle('roleForm')">确 定</el-button>
-      </span>
+      </div>
     </el-dialog>
-
-
 
   </div>
 </template>
@@ -199,10 +205,6 @@ export default {
       searchForm : {},
       delBtlStatu: true,
 
-      // tableData 是主体表格的参数========================
-      tableData: [],
-      multipleSelection: [], //用于批量删除的变量
-
       // 分页部分的参数 ==================================
       total: 0,
       size: 10,
@@ -212,6 +214,11 @@ export default {
       dialogVisible: false,  // 弹窗是否显示
       editForm: {            // 弹窗表格数据
       },
+
+      // tableData 是主体表格的参数========================
+      tableData: [],
+      multipleSelection: [], //用于批量删除的变量
+
       editFormRules: {       //弹窗表单的校验规则
         name: [
           {required: true, message: '请输入角色名称', trigger: 'blur'}
@@ -231,7 +238,9 @@ export default {
         children: 'children',
         label: 'name'
       },
-      roleTreeData: []
+      roleTreeData: [],
+      treeCheckedKeys: [],
+      checkStrictly: true
 
 
     }
@@ -279,6 +288,10 @@ export default {
       this.$refs[formName].resetFields(); //清空表单
       this.dialogVisible = true;  // 隐藏弹窗
       this.editForm = {}  // 将装载表单数据的变量设置为null
+    },
+
+    handleClose() {
+      this.resetForm('editForm')
     },
 
     // 点击新增的时候,清空弹窗表格,显示空白表格
@@ -349,7 +362,7 @@ export default {
 
       console.log(ids)
 
-      this.$axios.post('/sys/user/delete' + ids).then(res => {
+      this.$axios.post('/sys/user/delete', ids).then(res => {
         this.$message({
           showClose: 'true',
           message: '恭喜你, 操作成功',
@@ -364,14 +377,18 @@ export default {
     // 分配权限 弹窗部分的方法 =====================================================
     roleHandle(id){
       this.roleDialogFormVisible = true
-      this.$axios.get("/sys/user/info/" + id).then(res =>{
+      this.$axios.get('/sys/user/info/' + id).then(res => {
         this.roleForm = res.data.data
-        this.$refs.roleTree.setCheckedKeys(res.data.data.roleIds);
 
+        let roleIds = []
+        res.data.data.sysRoles.forEach(row => {
+          roleIds.push(row.id)
+        })
+        this.$refs.roleTree.setCheckedKeys(roleIds)
       })
     },
     submitRoleHandle(formName){ // 权限分配 弹窗中的 提交按钮触发事件
-      var roleIds = this.$refs.permTree.getCheckedKeys()
+      var roleIds = this.$refs.roleTree.getCheckedKeys()
       console.log(roleIds)
       // 提交信息要发出请求
       this.$axios.post("/sys/user/role/" + this.roleForm.id,  roleIds).then(res =>{
@@ -407,8 +424,6 @@ export default {
       })
 
     }
-
-
   }
 }
 </script>
