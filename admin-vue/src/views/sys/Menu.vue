@@ -30,7 +30,7 @@
           width="180">
       </el-table-column>
       <el-table-column
-          prop="perm"
+          prop="perms"
           label="权限编码"
           sortable
           width="180">
