@@ -58,9 +58,9 @@ export default {
   data() {
     return {
       loginForm: {
-        username: 'admin',  // 这里暂时固定为admin是为了方便程序测试
-        password: '111', // 这里暂时固定为111是为了方便程序测试
-        code: '11111', // 这里暂时固定为11111是为了方便程序测试
+        username: '',  // 这里暂时固定为admin是为了方便程序测试
+        password: '', // 这里暂时固定为111是为了方便程序测试
+        code: '', // 这里暂时固定为11111是为了方便程序测试
         // token用于获取验证码生成的随机码
         token: ''
       },
