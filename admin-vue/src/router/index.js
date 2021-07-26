@@ -9,7 +9,7 @@ import Menu from "@/views/sys/Menu";
 import Role from "@/views/sys/Role";
 import User from "@/views/sys/User";
 import UserCenter from "@/views/UserCenter";
-import axios from "axios"
+import axios from "../axios"
 // 导入全局参数的目录store
 import store from "../store"
 
@@ -26,11 +26,17 @@ const routes = [
         // 将index作为home的子页面, 完整请求是 : http://localhost:8080/index
         path: '/index',
         name: 'Index',
+        meta: {
+          title: "首页",
+        },
         component: Index
       },
       { // 下拉菜单的个人中心页
         path: '/userCenter',
         name: 'userCenter',
+        meta: {
+          title: "个人中心",
+        },
         // component: ()=> import("@/views/UserCenter.vue")
         component: UserCenter
       },
@@ -86,8 +92,17 @@ VueRouter.prototype.push = function push (to) {
 router.beforeEach((to, fromJson,  next) => {
   // 首先从store中获取hasRoute参数,判断导航栏路由状态是否更新了
   let hasRoute = store.state.menus.hasRoute
-  // 如果还没有更新过,则进行更新
-  if(!hasRoute){
+
+  // 增加token判断
+  // 首先获取token
+  let token = localStorage.getItem("token")
+  if(to.path == "/login"){
+    // 当path是login,则进行下一步,不用判断token
+     next()
+  }else if(!token){
+    // 当token不存在, 则跳转到login页面
+    next({path: "/login"})
+  }else if(token && !hasRoute){ // 如果还没有更新过,则进行更新
     // axios.get: 发起获取左侧导航栏信息的请求
     axios.get("/sys/menu/nav", {
       headers: {
