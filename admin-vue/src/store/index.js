@@ -19,7 +19,6 @@ export default new Vuex.Store({
       state.token = token
       localStorage.setItem("token", token)
     },
-
   },
   getters: {
     //get方法
